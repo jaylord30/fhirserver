@@ -1,0 +1,29 @@
+
+spring:
+  datasource:
+    url: 'jdbc:postgresql://db:5432/hapi'
+    username: admin
+    password: admin
+    driverClassName: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
+      hibernate.search.enabled: false
+hapi:
+  fhir:
+    validation_enabled: true
+    enable_repository_validating_interceptor: true
+
+    validation:
+      enabled: true
+      use_resource_cache: true
+      fail_on_severity: ERROR
+
+    request_validating_interceptor:
+      enabled: true
+      require_valid_resource: true
+
+#  Specific IG validation
+    # implementationguides:
+    #   - name: my-ig
+    #     packageUrl: file:/opt/igs/my-ig.tgz

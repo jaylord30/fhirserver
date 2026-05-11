@@ -1,0 +1,44 @@
+name: HAPI FHIR CI/CD
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+
+      # 1. Checkout repository
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      # 2. Show files
+      - name: Show Files
+        run: ls -R
+
+      # 3. Pull HAPI FHIR Docker Image
+      - name: Pull HAPI FHIR Image
+        run: docker pull hapiproject/hapi:latest
+
+      # 4. Run HAPI FHIR Container
+      - name: Run HAPI FHIR
+        run: |
+          docker run -d \
+          --name hapi-fhir-server \
+          -p 8080:8080 \
+          hapiproject/hapi:latest
+
+      # 5. Show Running Containers
+      - name: Verify Container
+        run: docker ps
+
+      # 6. Wait for startup
+      - name: Wait for HAPI FHIR Startup
+        run: sleep 30
+
+      # 7. Check Application Logs
+      - name: Show Logs
+        run: docker logs hapi-fhir-server
